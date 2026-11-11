@@ -14,17 +14,17 @@ export const BlogPreview: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
           <div>
             <span className="text-xs font-black uppercase tracking-wider text-[#0875C9] block mb-1">
-              Our Blog
+              Insights &amp; Updates
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-[#073B69] tracking-tight">
-              Insights for Better Building
+              Latest Publications &amp; Newsletters
             </h2>
           </div>
           <Link
-            href="/blog"
+            href="/insights"
             className="text-xs sm:text-sm font-bold text-[#0875C9] hover:text-[#073B69] inline-flex items-center gap-1 transition-colors"
           >
-            <span>View All Articles</span>
+            <span>View All Insights &amp; Updates</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -34,7 +34,7 @@ export const BlogPreview: React.FC = () => {
           {posts.map((post) => (
             <Link
               key={post.id}
-              href={`/blog/${post.slug}`}
+              href={`/insights/${post.slug}`}
               className="bg-white rounded-2xl overflow-hidden border border-slate-200/80 hover:border-blue-300 card-shadow-hover group flex flex-col justify-between"
             >
               <div>

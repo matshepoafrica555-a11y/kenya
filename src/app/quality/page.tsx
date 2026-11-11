@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
 import {
   ShieldCheck,
@@ -79,36 +78,23 @@ export default function QualityPage() {
       </div>
 
       <div className="container-custom mt-12 space-y-16">
-        {/* Two Column Introduction */}
+        {/* Introduction Philosophy */}
         <section className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-sm">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            <div className="lg:col-span-7 space-y-4">
-              <span className="text-xs font-black uppercase tracking-wider text-[#0875C9]">
-                Our Quality Philosophy
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#073B69] tracking-tight">
-                Rigorous Discipline at Every Step of Manufacturing
-              </h2>
-              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                In the construction chemicals industry, failure is not an option. A tile adhesive that loses grip or a waterproofing system that degrades under water pressure leads to severe structural repair expenses.
-              </p>
-              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                At Matshepo Africa Ltd, we instill quality control into each operational stage—from the arrival of high-purity silica sand and Portland cement at our Nairobi godown to precision packaging and dispatch.
-              </p>
-              <div className="p-4 bg-[#F5F8FC] rounded-2xl border border-slate-200/80 text-xs text-slate-700">
-                <strong>Our Promise:</strong> Every bag of Simba Grip and every kit of Ultraguard 2K meets consistent performance parameters, ensuring contractors get predictable results on site every single time.
-              </div>
-            </div>
-
-            <div className="lg:col-span-5">
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-slate-100">
-                <Image
-                  src="/assets/about/matshepo_factory_worker.jpg"
-                  alt="Quality control inspection at Matshepo Africa"
-                  fill
-                  className="object-cover"
-                />
-              </div>
+          <div className="max-w-4xl space-y-4">
+            <span className="text-xs font-black uppercase tracking-wider text-[#0875C9]">
+              Our Quality Philosophy
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-[#073B69] tracking-tight">
+              Rigorous Discipline at Every Step of Manufacturing
+            </h2>
+            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              In the construction chemicals industry, failure is not an option. A tile adhesive that loses grip or a waterproofing system that degrades under water pressure leads to severe structural repair expenses.
+            </p>
+            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              At Matshepo Africa Ltd, we instill quality control into each operational stage—from the arrival of high-purity silica sand and Portland cement at our Nairobi godown to precision packaging and dispatch.
+            </p>
+            <div className="p-4 bg-[#F5F8FC] rounded-2xl border border-slate-200/80 text-xs text-slate-700">
+              <strong>Our Promise:</strong> Every bag of Simba Grip and every kit of Ultraguard 2K meets consistent performance parameters, ensuring contractors get predictable results on site every single time.
             </div>
           </div>
         </section>

@@ -188,6 +188,15 @@ export const Footer: React.FC = () => {
                   <span>Contact Us</span>
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/blog"
+                  className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all"
+                >
+                  <ArrowRight className="w-3 h-3 text-[#0795A5]" />
+                  <span>Blog &amp; Newsletters</span>
+                </Link>
+              </li>
               <li className="pt-2">
                 <button
                   onClick={() => openQuoteModal()}
@@ -251,6 +260,9 @@ export const Footer: React.FC = () => {
             </Link>
             <Link href="/terms" className="hover:text-white transition-colors">
               Terms and Conditions
+            </Link>
+            <Link href="/admin" className="hover:text-[#FFC400] text-slate-400 transition-colors">
+              Admin Portal
             </Link>
             <Link href="/contact" className="hover:text-white transition-colors">
               Contact Us

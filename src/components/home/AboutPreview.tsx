@@ -1,6 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, ShieldCheck, Cpu, Users, Leaf } from "lucide-react";
 
 export const AboutPreview: React.FC = () => {
@@ -36,7 +35,7 @@ export const AboutPreview: React.FC = () => {
       <div className="container-custom">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           {/* Left Text Column */}
-          <div className="lg:col-span-5 space-y-4">
+          <div className="lg:col-span-7 space-y-4">
             <span className="text-xs font-black uppercase tracking-wider text-[#0875C9] block">
               About Matshepo Africa
             </span>
@@ -69,25 +68,8 @@ export const AboutPreview: React.FC = () => {
             </div>
           </div>
 
-          {/* Middle: Authentic Factory Worker Photo */}
-          <div className="lg:col-span-4">
-            <div className="relative rounded-2xl overflow-hidden shadow-xl border border-slate-200/80 aspect-[4/3] bg-slate-200">
-              <Image
-                src="/assets/about/matshepo_factory_worker.jpg"
-                alt="Matshepo Africa Ltd Factory Production and Quality Inspection in Nairobi"
-                fill
-                sizes="(max-width: 1024px) 100vw, 400px"
-                className="object-cover hover:scale-105 transition-transform duration-500"
-              />
-              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-[#073B69]/90 to-transparent p-4 text-white">
-                <span className="text-xs font-bold block">Manufacturing Plant</span>
-                <span className="text-[11px] text-slate-300">Athi River, Nairobi, Kenya</span>
-              </div>
-            </div>
-          </div>
-
           {/* Right Column: 4 Company Pillars */}
-          <div className="lg:col-span-3 space-y-3">
+          <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
             {pillars.map((item, index) => {
               const Icon = item.icon;
               return (

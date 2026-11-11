@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import { Suspense } from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { QuoteProvider } from "@/context/QuoteContext";
@@ -85,7 +86,9 @@ export default function RootLayout({
     <html lang="en" className={plusJakartaSans.variable}>
       <body className="min-h-screen flex flex-col font-sans bg-[#F5F8FC] text-[#172333]">
         <QuoteProvider>
-          <Navbar />
+          <Suspense fallback={<div className="h-16 bg-white w-full border-b border-slate-100" />}>
+            <Navbar />
+          </Suspense>
           <main className="flex-1 w-full">{children}</main>
           <Footer />
           <QuoteModal />

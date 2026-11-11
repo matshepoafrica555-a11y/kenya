@@ -1,7 +1,7 @@
 import React from "react";
 import { notFound } from "next/navigation";
-import { blogPostsData } from "@/data/blog";
-import { BlogDetailClient } from "./BlogDetailClient";
+import { getAllPosts, getPostBySlug } from "@/lib/posts-store";
+import { InsightsDetailClient } from "@/app/insights/[slug]/InsightsDetailClient";
 import type { Metadata } from "next";
 
 interface Props {
@@ -10,15 +10,9 @@ interface Props {
   }>;
 }
 
-export async function generateStaticParams() {
-  return blogPostsData.map((post) => ({
-    slug: post.slug,
-  }));
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = blogPostsData.find((p) => p.slug === slug);
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     return {
@@ -26,23 +20,34 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const isNewsletter = post.isNewsletter || post.category === "Monthly Newsletter";
+  const title = isNewsletter
+    ? `${post.title} | Matshepo Monthly Newsletter`
+    : `${post.title} | Matshepo Africa Blog`;
+
   return {
-    title: `${post.title} | Matshepo Africa Blog`,
+    title,
     description: post.summary,
     openGraph: {
-      title: `${post.title} | Matshepo Africa Ltd`,
+      title: post.title,
       description: post.summary,
+      type: "article",
     },
   };
 }
 
 export default async function BlogDetailPage({ params }: Props) {
   const { slug } = await params;
-  const post = blogPostsData.find((p) => p.slug === slug);
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     notFound();
   }
 
-  return <BlogDetailClient post={post} />;
+  const allPosts = await getAllPosts();
+  const relatedPosts = allPosts
+    .filter((p) => p.slug !== slug && p.status !== "draft")
+    .slice(0, 3);
+
+  return <InsightsDetailClient post={post} relatedPosts={relatedPosts} />;
 }

@@ -65,40 +65,27 @@ export default function AboutPage() {
       </div>
 
       <div className="container-custom mt-12 space-y-16">
-        {/* Section A: Who We Are (Two Column Layout) */}
+        {/* Section A: Who We Are */}
         <section className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-sm">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            <div className="lg:col-span-7 space-y-4">
-              <span className="text-xs font-black uppercase tracking-wider text-[#0875C9]">
-                Who We Are
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-[#073B69] tracking-tight">
-                Empowering Kenya&apos;s Modern Construction Sector
-              </h2>
-              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                Matshepo Africa Ltd is a construction chemicals manufacturer based in Nairobi, Kenya, providing solutions for tile installation, waterproofing, grouting, plastering, and flooring systems.
-              </p>
-              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                Our focus is on developing practical construction chemical solutions that support reliable installation, durable building surfaces, and long-lasting performance.
-              </p>
-              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                Through product quality, technical development, and customer-focused service, we aim to support contractors, builders, distributors, developers, and construction professionals across our markets.
-              </p>
-              <div className="pt-2 flex items-center gap-2 text-xs font-bold text-[#073B69]">
-                <MapPin className="w-4 h-4 text-[#0875C9]" />
-                <span>Manufacturing & Distribution: Athi 55 Business Park, Nairobi, Kenya</span>
-              </div>
-            </div>
-
-            <div className="lg:col-span-5">
-              <div className="relative rounded-2xl overflow-hidden aspect-[4/3] shadow-lg border border-slate-200 bg-slate-100">
-                <Image
-                  src="/assets/about/matshepo_factory_worker.jpg"
-                  alt="Matshepo Africa Manufacturing and Quality Checking"
-                  fill
-                  className="object-cover"
-                />
-              </div>
+          <div className="max-w-4xl space-y-4">
+            <span className="text-xs font-black uppercase tracking-wider text-[#0875C9]">
+              Who We Are
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-[#073B69] tracking-tight">
+              Empowering Kenya&apos;s Modern Construction Sector
+            </h2>
+            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              Matshepo Africa Ltd is a construction chemicals manufacturer based in Nairobi, Kenya, providing solutions for tile installation, waterproofing, grouting, plastering, and flooring systems.
+            </p>
+            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              Our focus is on developing practical construction chemical solutions that support reliable installation, durable building surfaces, and long-lasting performance.
+            </p>
+            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              Through product quality, technical development, and customer-focused service, we aim to support contractors, builders, distributors, developers, and construction professionals across our markets.
+            </p>
+            <div className="pt-2 flex items-center gap-2 text-xs font-bold text-[#073B69]">
+              <MapPin className="w-4 h-4 text-[#0875C9]" />
+              <span>Manufacturing & Distribution: Athi 55 Business Park, Nairobi, Kenya</span>
             </div>
           </div>
         </section>

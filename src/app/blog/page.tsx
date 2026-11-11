@@ -1,12 +1,17 @@
 import React from "react";
-import { BlogClient } from "./BlogClient";
+import { getAllPosts } from "@/lib/posts-store";
+import { InsightsClient } from "@/app/insights/InsightsClient";
+import type { Metadata } from "next";
 
-export const metadata = {
-  title: "Insights for Better Building | Blog | Matshepo Africa Ltd",
+export const metadata: Metadata = {
+  title: "Blog & Monthly Newsletters | Matshepo Africa Ltd",
   description:
-    "Explore practical guidance, tile adhesive grades, waterproofing tips, and microcement flooring insights from the construction chemical experts at Matshepo Africa Ltd in Nairobi, Kenya.",
+    "Explore our company monthly newsletters, construction chemical guides, waterproofing bulletins, and industry updates from Matshepo Africa Ltd in Nairobi, Kenya.",
 };
 
-export default function BlogPage() {
-  return <BlogClient />;
+export default async function BlogPage() {
+  const posts = await getAllPosts();
+  const publishedPosts = posts.filter((p) => p.status !== "draft");
+
+  return <InsightsClient initialPosts={publishedPosts} />;
 }

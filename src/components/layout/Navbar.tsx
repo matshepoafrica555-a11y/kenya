@@ -53,6 +53,7 @@ export const Navbar: React.FC = () => {
       href: "/products",
       hasDropdown: true,
     },
+    { name: "Blog", href: "/blog" },
     { name: "Contact Us", href: "/contact" },
   ];
 
@@ -114,7 +115,8 @@ export const Navbar: React.FC = () => {
               const isActive =
                 link.href === "/"
                   ? pathname === "/"
-                  : pathname.startsWith(link.href);
+                  : pathname.startsWith(link.href) ||
+                    (link.href === "/blog" && pathname.startsWith("/insights"));
 
               if (link.hasDropdown) {
                 return (
@@ -304,6 +306,18 @@ export const Navbar: React.FC = () => {
                 </div>
               )}
             </div>
+
+            <Link
+              href="/blog"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`block px-4 py-3 rounded-xl text-base font-bold ${
+                pathname.startsWith("/blog") || pathname.startsWith("/insights")
+                  ? "bg-blue-50 text-[#0875C9]"
+                  : "text-slate-800 hover:bg-slate-50"
+              }`}
+            >
+              Blog
+            </Link>
 
             <Link
               href="/contact"

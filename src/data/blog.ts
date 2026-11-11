@@ -1,18 +1,5 @@
-export interface BlogPost {
-  id: string;
-  slug: string;
-  title: string;
-  category: "Tile Adhesives" | "Waterproofing" | "Construction Tips" | "Product Education" | "Flooring" | "Industry Insights";
-  date: string;
-  readTime: string;
-  summary: string;
-  image: string;
-  content: {
-    sectionHeading?: string;
-    paragraphs: string[];
-  }[];
-  keyTakeaways: string[];
-}
+export type { BlogPost, BlogContentSection, PostAuthor } from "@/lib/types";
+import type { BlogPost } from "@/lib/types";
 
 export const blogPostsData: BlogPost[] = [
   {
