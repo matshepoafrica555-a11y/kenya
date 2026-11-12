@@ -53,6 +53,7 @@ export const Navbar: React.FC = () => {
       href: "/products",
       hasDropdown: true,
     },
+    { name: "Projects", href: "/projects" },
     { name: "Blog", href: "/blog" },
     { name: "Contact Us", href: "/contact" },
   ];

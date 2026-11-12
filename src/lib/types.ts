@@ -39,3 +39,28 @@ export interface BlogPost {
   updatedAt?: string;
 }
 
+export interface ProjectItem {
+  id: string;
+  name: string;
+  location: string;
+  category:
+    | "Swimming Pools"
+    | "Basements"
+    | "Rooftops"
+    | "Wet Areas"
+    | "Balconies"
+    | "Other Projects"
+    | string;
+  description: string;
+  fullDetails: string;
+  image: string;
+  systemsUsed: string[];
+  scope: string;
+  client?: string;
+  completionYear?: string;
+  featured?: boolean;
+  status?: "published" | "draft";
+  createdAt?: string;
+  updatedAt?: string;
+}
+
