@@ -3,6 +3,8 @@ import { getAllPosts } from "@/lib/posts-store";
 import { InsightsClient } from "@/app/insights/InsightsClient";
 import type { Metadata } from "next";
 
+export const instant = false;
+
 export const metadata: Metadata = {
   title: "Blog & Monthly Newsletters | Matshepo Africa Ltd",
   description:

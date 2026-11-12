@@ -1,13 +1,22 @@
 import React from "react";
 import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug } from "@/lib/posts-store";
+import { blogPostsData } from "@/data/blog";
 import { InsightsDetailClient } from "@/app/insights/[slug]/InsightsDetailClient";
 import type { Metadata } from "next";
+
+export const instant = false;
 
 interface Props {
   params: Promise<{
     slug: string;
   }>;
+}
+
+export async function generateStaticParams() {
+  return blogPostsData.map((post) => ({
+    slug: post.slug,
+  }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
