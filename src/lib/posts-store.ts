@@ -86,41 +86,50 @@ async function saveLocalPosts(posts: BlogPost[]): Promise<void> {
 }
 
 export async function getAllPosts(): Promise<BlogPost[]> {
-  // 1. Try fetching from Supabase Cloud
+  // 1. Try fetching from Supabase Cloud with a strict fast timeout so page load is instant
   try {
-    const { data, error } = await supabaseAdmin
+    const fetchPromise = supabaseAdmin
       .from("posts")
       .select("*")
       .order("created_at", { ascending: false });
 
+    // 1.2 second timeout race to prevent slow cold starts from blocking page navigation
+    const timeoutPromise = new Promise<{ data: null; error: Error }>((_, reject) =>
+      setTimeout(() => reject(new Error("Supabase timeout")), 1200)
+    );
+
+    const result = (await Promise.race([fetchPromise, timeoutPromise])) as any;
+    const { data, error } = result || {};
+
     if (!error && Array.isArray(data) && data.length > 0) {
       return data.map(rowToPost);
     }
-
-    // If Supabase table exists but has 0 records, seed it from local
-    if (!error && Array.isArray(data) && data.length === 0) {
-      const local = await getLocalPosts();
-      if (local.length > 0) {
-        const rows = local.map(postToRow);
-        await supabaseAdmin.from("posts").insert(rows);
-        return local;
-      }
-    }
   } catch {
-    // Supabase not ready or offline, fallback to local
+    // Supabase offline, cold start, or timed out — seamlessly fallback to instant local data
   }
 
-  // 2. Fallback to local posts
-  return await getLocalPosts();
+  // 2. Instant fallback to local posts
+  const local = await getLocalPosts();
+  if (local.length > 0) {
+    return local;
+  }
+  return blogPostsData;
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   try {
-    const { data, error } = await supabaseAdmin
+    const fetchPromise = supabaseAdmin
       .from("posts")
       .select("*")
       .eq("slug", slug)
       .maybeSingle();
+
+    const timeoutPromise = new Promise<{ data: null; error: Error }>((_, reject) =>
+      setTimeout(() => reject(new Error("Supabase timeout")), 1200)
+    );
+
+    const result = (await Promise.race([fetchPromise, timeoutPromise])) as any;
+    const { data, error } = result || {};
 
     if (!error && data) {
       return rowToPost(data);
