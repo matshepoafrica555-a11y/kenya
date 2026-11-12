@@ -38,6 +38,7 @@ export const AdminClient: React.FC = () => {
   // Authentication State
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [authChecking, setAuthChecking] = useState<boolean>(true);
+  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginError, setLoginError] = useState<string>("");
@@ -142,18 +143,19 @@ export const AdminClient: React.FC = () => {
       const res = await fetch("/api/admin/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ username, password }),
       });
       const data = await res.json();
 
       if (res.ok && data.success) {
         setIsAuthenticated(true);
+        setUsername("");
         setPassword("");
         fetchPosts();
         fetchProjects();
         showNotification("Welcome to Matshepo Admin Panel", "success");
       } else {
-        setLoginError(data.message || "Invalid password");
+        setLoginError(data.message || "Invalid username or password");
       }
     } catch {
       setLoginError("Connection failed. Please check network.");
@@ -608,15 +610,31 @@ export const AdminClient: React.FC = () => {
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label className="text-xs font-bold text-slate-700 block mb-1.5">
-                Admin Passkey
+                Username
+              </label>
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter admin username..."
+                required
+                autoComplete="username"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#0875C9] focus:ring-2 focus:ring-blue-100 text-sm"
+              />
+            </div>
+
+            <div>
+              <label className="text-xs font-bold text-slate-700 block mb-1.5">
+                Password
               </label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter administrator passkey..."
+                  placeholder="Enter administrator password..."
                   required
+                  autoComplete="current-password"
                   className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#0875C9] focus:ring-2 focus:ring-blue-100 text-sm"
                 />
                 <button
@@ -655,10 +673,13 @@ export const AdminClient: React.FC = () => {
           {/* Quick Password Hint Box */}
           <div className="p-3.5 bg-blue-50/70 rounded-xl border border-blue-100 text-[11px] text-slate-600 space-y-1">
             <span className="font-bold text-[#0875C9] block">
-              Default System Credentials:
+              Default Credentials:
             </span>
             <p>
-              Passkey: <code className="bg-white px-2 py-0.5 rounded text-slate-900 font-mono font-bold">matshepo@admin2026</code>
+              Username: <code className="bg-white px-2 py-0.5 rounded text-slate-900 font-mono font-bold">matshepo</code>
+            </p>
+            <p>
+              Password: <code className="bg-white px-2 py-0.5 rounded text-slate-900 font-mono font-bold">matshepo777</code>
             </p>
           </div>
 

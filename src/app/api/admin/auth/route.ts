@@ -1,23 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { getAdminPassword, generateAuthToken, verifyAuthToken } from "@/lib/auth";
+import { getAdminUsername, getAdminPassword, generateAuthToken, verifyAuthToken } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { password } = body;
+    const { username, password } = body;
 
-    if (!password) {
+    if (!username || !password) {
       return NextResponse.json(
-        { success: false, message: "Password is required" },
+        { success: false, message: "Username and password are required" },
         { status: 400 }
       );
     }
 
+    const expectedUsername = getAdminUsername();
     const expectedPassword = getAdminPassword();
-    if (password !== expectedPassword) {
+
+    const isUserValid = username.trim().toLowerCase() === expectedUsername.toLowerCase();
+    const isPassValid = password === expectedPassword;
+
+    if (!isUserValid || !isPassValid) {
       return NextResponse.json(
-        { success: false, message: "Invalid administrator password" },
+        { success: false, message: "Invalid username or password" },
         { status: 401 }
       );
     }

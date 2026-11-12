@@ -1,7 +1,12 @@
 import { cookies } from "next/headers";
 
 const ADMIN_SECRET = process.env.ADMIN_SECRET || "matshepo-secret-salt-2026";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "matshepo@admin2026";
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "matshepo";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "matshepo777";
+
+export function getAdminUsername(): string {
+  return ADMIN_USERNAME;
+}
 
 export function getAdminPassword(): string {
   return ADMIN_PASSWORD;
@@ -10,6 +15,7 @@ export function getAdminPassword(): string {
 export function generateAuthToken(): string {
   const payload = {
     role: "admin",
+    username: ADMIN_USERNAME,
     timestamp: Date.now(),
   };
   return Buffer.from(JSON.stringify(payload)).toString("base64");
