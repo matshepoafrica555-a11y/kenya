@@ -6,9 +6,9 @@ import type { Metadata } from "next";
 export const instant = false;
 
 export const metadata: Metadata = {
-  title: "Blog & Monthly Newsletters | Matshepo Africa Ltd",
+  title: "What’s New — Building the Future | Matshepo Africa Ltd",
   description:
-    "Explore our company monthly newsletters, construction chemical guides, waterproofing bulletins, and industry updates from Matshepo Africa Ltd in Nairobi, Kenya.",
+    "Building the Future – Monthly Edition: Project highlights, completed works with completion dates, company milestones, and technical breakthroughs from Matshepo Africa Ltd in Nairobi, Kenya.",
 };
 
 export default async function BlogPage() {

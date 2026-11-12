@@ -181,15 +181,6 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="/projects"
-                  className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all"
-                >
-                  <ArrowRight className="w-3 h-3 text-[#0795A5]" />
-                  <span>Projects &amp; Portfolio</span>
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/contact"
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all"
                 >
@@ -203,7 +194,7 @@ export const Footer: React.FC = () => {
                   className="hover:text-white hover:translate-x-1 inline-flex items-center gap-1.5 transition-all"
                 >
                   <ArrowRight className="w-3 h-3 text-[#0795A5]" />
-                  <span>Blog &amp; Newsletters</span>
+                  <span>What’s New</span>
                 </Link>
               </li>
               <li className="pt-2">

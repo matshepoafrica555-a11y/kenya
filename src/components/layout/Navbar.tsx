@@ -53,8 +53,7 @@ export const Navbar: React.FC = () => {
       href: "/products",
       hasDropdown: true,
     },
-    { name: "Projects", href: "/projects" },
-    { name: "Blog", href: "/blog" },
+    { name: "What’s New", href: "/blog" },
     { name: "Contact Us", href: "/contact" },
   ];
 
@@ -309,18 +308,6 @@ export const Navbar: React.FC = () => {
             </div>
 
             <Link
-              href="/projects"
-              onClick={() => setMobileMenuOpen(false)}
-              className={`block px-4 py-3 rounded-xl text-base font-bold ${
-                pathname.startsWith("/projects")
-                  ? "bg-blue-50 text-[#0875C9]"
-                  : "text-slate-800 hover:bg-slate-50"
-              }`}
-            >
-              Projects
-            </Link>
-
-            <Link
               href="/blog"
               onClick={() => setMobileMenuOpen(false)}
               className={`block px-4 py-3 rounded-xl text-base font-bold ${
@@ -329,7 +316,7 @@ export const Navbar: React.FC = () => {
                   : "text-slate-800 hover:bg-slate-50"
               }`}
             >
-              Blog
+              What’s New
             </Link>
 
             <Link

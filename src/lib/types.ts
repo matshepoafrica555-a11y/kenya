@@ -8,29 +8,33 @@ export interface PostAuthor {
   role: string;
 }
 
+export interface ProjectHighlight {
+  title: string;
+  location?: string;
+  completionDate?: string;
+  image?: string;
+  description?: string;
+  systemsUsed?: string[];
+}
+
 export interface BlogPost {
   id: string;
   slug: string;
   title: string;
-  category:
-    | "Monthly Newsletter"
-    | "Company News"
-    | "Tile Adhesives"
-    | "Waterproofing"
-    | "Flooring"
-    | "Construction Tips"
-    | "Product Education"
-    | "Industry Insights"
-    | string;
+  category: string;
   date: string;
   monthYear?: string; // e.g. "November 2026"
   isNewsletter?: boolean;
-  newsletterEdition?: string; // e.g. "Issue #12 — November 2026"
+  newsletterEdition?: string; // e.g. "Building the Future – November 2026 Edition"
   pdfUrl?: string; // Optional downloadable PDF file URL
   readTime: string;
   summary: string;
   image: string;
   author?: PostAuthor;
+  projectHighlightsTitle?: string; // e.g. "Project Highlights"
+  projectHighlights?: ProjectHighlight[];
+  storylineTitle?: string; // e.g. "Our Storyline"
+  storylineContent?: string[]; // e.g. monthly company updates, factory progress, product developments
   content: BlogContentSection[];
   keyTakeaways: string[];
   status?: "published" | "draft";

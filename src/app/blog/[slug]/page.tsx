@@ -31,8 +31,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const isNewsletter = post.isNewsletter || post.category === "Monthly Newsletter";
   const title = isNewsletter
-    ? `${post.title} | Matshepo Monthly Newsletter`
-    : `${post.title} | Matshepo Africa Blog`;
+    ? `${post.title} | Building the Future – Matshepo Monthly Edition`
+    : `${post.title} | Matshepo Africa What’s New`;
 
   return {
     title,

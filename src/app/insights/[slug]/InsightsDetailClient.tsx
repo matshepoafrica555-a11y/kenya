@@ -46,7 +46,7 @@ export const InsightsDetailClient: React.FC<Props> = ({ post, relatedPosts }) =>
             </Link>
             <span>/</span>
             <Link href="/blog" className="hover:text-[#0875C9] transition-colors shrink-0">
-              Blog
+              What’s New
             </Link>
             <span>/</span>
             <span className="text-slate-900 font-bold truncate">{post.title}</span>
@@ -57,7 +57,7 @@ export const InsightsDetailClient: React.FC<Props> = ({ post, relatedPosts }) =>
             className="hidden sm:inline-flex items-center gap-1.5 text-slate-600 hover:text-[#0875C9] font-bold shrink-0 transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to Blog</span>
+            <span>Back to What’s New</span>
           </Link>
         </div>
       </div>

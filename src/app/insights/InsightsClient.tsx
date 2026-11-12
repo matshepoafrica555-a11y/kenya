@@ -3,15 +3,18 @@
 import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { BlogPost } from "@/lib/types";
+import { BlogPost, ProjectHighlight } from "@/lib/types";
 import {
   Calendar,
   Clock,
   ArrowRight,
   FileDown,
-  Newspaper,
-  Search,
+  Sparkles,
+  MapPin,
+  CheckCircle2,
   Lock,
+  Building,
+  History,
 } from "lucide-react";
 
 interface Props {
@@ -20,247 +23,294 @@ interface Props {
 
 export const InsightsClient: React.FC<Props> = ({ initialPosts }) => {
   const [posts] = useState<BlogPost[]>(initialPosts);
-  const [searchQuery, setSearchQuery] = useState("");
 
-  // Separate monthly newsletters and all issues
-  const allIssues = useMemo(() => {
-    return posts.filter((p) => p.status !== "draft");
-  }, [posts]);
+  // Active / selected edition
+  const [selectedPostId, setSelectedPostId] = useState<string>(() => {
+    return initialPosts[0]?.id || "";
+  });
 
-  // Featured is the latest monthly newsletter or latest post
-  const latestIssue = useMemo(() => {
-    return (
-      allIssues.find((p) => p.isNewsletter || p.category === "Monthly Newsletter") ||
-      allIssues[0]
-    );
-  }, [allIssues]);
+  const activePost = useMemo(() => {
+    return posts.find((p) => p.id === selectedPostId) || posts[0];
+  }, [posts, selectedPostId]);
 
-  // Other issues excluding the featured one
-  const pastIssues = useMemo(() => {
-    const remaining = allIssues.filter((p) => p.id !== latestIssue?.id);
-    if (!searchQuery.trim()) return remaining;
+  // Project highlights for current edition (either custom or fallback to Levington sample)
+  const highlights: ProjectHighlight[] = useMemo(() => {
+    if (activePost?.projectHighlights && activePost.projectHighlights.length > 0) {
+      return activePost.projectHighlights;
+    }
+    // Default fallback sample reflecting Levington Project
+    return [
+      {
+        title: "Levington Project",
+        location: "Nairobi, Kenya",
+        completionDate: "November 2026",
+        image: "/assets/projects/project_swimming_pool.jpg",
+        description:
+          "Full structural waterproofing and premium tile adhesive installation for luxury residences. Featuring substrate preparation, dual-component cementitious tanking, and C2TES1 adhesive fixing.",
+        systemsUsed: [
+          "Ultraguard 2K Cementitious Waterproofing",
+          "Simba Grip 818 (White Powder)",
+          "Tile Lit Waterproof Grout",
+        ],
+      },
+      {
+        title: "Athi River Industrial Facility",
+        location: "Athi River, Kenya",
+        completionDate: "October 2026",
+        image: "/assets/projects/project_basement.jpg",
+        description:
+          "Heavy-duty underground foundation tanking and retaining wall moisture protection system covering multi-level storage slabs.",
+        systemsUsed: [
+          "APP 4mm Mineral Membrane",
+          "Ultraguard 2K Heavy Duty",
+        ],
+      },
+    ];
+  }, [activePost]);
 
-    const q = searchQuery.toLowerCase().trim();
-    return allIssues.filter(
-      (p) =>
-        p.title.toLowerCase().includes(q) ||
-        p.summary.toLowerCase().includes(q) ||
-        (p.monthYear && p.monthYear.toLowerCase().includes(q))
-    );
-  }, [allIssues, latestIssue, searchQuery]);
+  // Storyline items for current edition
+  const storylineItems: string[] = useMemo(() => {
+    if (activePost?.storylineContent && activePost.storylineContent.length > 0) {
+      return activePost.storylineContent;
+    }
+    if (activePost?.content && activePost.content.length > 0) {
+      const paras: string[] = [];
+      activePost.content.forEach((sec) => {
+        paras.push(...sec.paragraphs);
+      });
+      return paras.slice(0, 4);
+    }
+    return [
+      "Factory Capacity Expansion: Commissioned new automated dry-mortar blending line in Nairobi, ramping up Simba Grip and Ultraguard production capacity by 40%.",
+      "Chemical R&D Milestones: Formulated enhanced polymers for C2 grade adhesives, offering zero vertical slip and extended open time for large porcelain slabs.",
+      "Contractor Training Programs: Conducted on-site masterclass sessions for 120+ local tile applicators across Nairobi and Kiambu counties.",
+    ];
+  }, [activePost]);
+
+  const projectTitle = activePost?.projectHighlightsTitle || "Project Highlights";
+  const storylineTitle = activePost?.storylineTitle || "Our Storyline";
 
   return (
-    <div className="bg-[#FAFBFD] min-h-screen pb-20">
-      {/* Clean Minimal Header */}
-      <section className="bg-white border-b border-slate-200/70 py-12 sm:py-16">
-        <div className="container-custom max-w-4xl mx-auto text-center space-y-3">
-          <span className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-[#0875C9] bg-blue-50 px-3 py-1 rounded-full">
-            <Newspaper className="w-3.5 h-3.5" />
-            <span>Monthly Newsletters &amp; Bulletins</span>
-          </span>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#073B69] tracking-tight uppercase">
-            BLOG &amp; UPDATES
+    <div className="bg-[#FAFBFD] min-h-screen pb-24">
+      {/* Clean Minimal Header: Just One Main Heading */}
+      <section className="bg-gradient-to-b from-white via-white to-[#F5F8FC] border-b border-slate-200/80 py-16 lg:py-20">
+        <div className="container-custom max-w-4xl mx-auto text-center space-y-4">
+          <div className="inline-flex items-center gap-2 bg-[#0875C9]/10 text-[#0875C9] px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-widest border border-blue-200">
+            <Sparkles className="w-3.5 h-3.5 text-[#FFC400]" />
+            What’s New
+          </div>
+
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#073B69] tracking-tight">
+            Building the Future – Monthly Edition
           </h1>
-          <p className="text-slate-600 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">
-            Our company newsletter published on a monthly basis, featuring manufacturing milestones, product standards, and on-site engineering tips.
+
+          <p className="text-slate-600 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed">
+            A clean, transparent monthly review of our completed project milestones, factory developments, and construction chemical innovations across Kenya.
           </p>
 
-          {/* Quick Search */}
-          <div className="pt-4 max-w-md mx-auto">
-            <div className="relative">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search monthly issues (e.g. November 2026, Waterproofing)..."
-                className="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm rounded-full border border-slate-200 bg-[#FAFBFD] focus:outline-none focus:border-[#0875C9] focus:bg-white shadow-2xs transition-all"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-slate-600 font-bold"
-                >
-                  Clear
-                </button>
-              )}
+          {/* Month / Edition Switcher (if multiple editions exist) */}
+          {posts.length > 1 && (
+            <div className="pt-2 flex items-center justify-center gap-2 overflow-x-auto scrollbar-none">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-1">
+                Select Edition:
+              </span>
+              {posts.slice(0, 6).map((post) => {
+                const label = post.monthYear || post.newsletterEdition || post.title;
+                const isSelected = post.id === activePost?.id;
+                return (
+                  <button
+                    key={post.id}
+                    onClick={() => setSelectedPostId(post.id)}
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                      isSelected
+                        ? "bg-[#073B69] text-white shadow-xs"
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
             </div>
-          </div>
+          )}
         </div>
       </section>
 
-      {/* Main Content Area */}
-      <div className="container-custom max-w-5xl mx-auto mt-10 space-y-12">
-        {/* Latest Issue Spotlight (Only shown when not searching) */}
-        {!searchQuery && latestIssue && (
-          <div className="space-y-3">
-            <div className="flex items-center justify-between text-xs font-bold text-slate-500 uppercase tracking-wider">
-              <span>Current Monthly Release</span>
-              <span className="text-[#0875C9] font-black">{latestIssue.monthYear || latestIssue.date}</span>
+      {/* Main Single Page Layout */}
+      <div className="container-custom max-w-4xl mx-auto mt-10 space-y-12">
+        {/* Edition Subheader Info */}
+        <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#0875C9] flex items-center justify-center font-black">
+              <Calendar className="w-5 h-5" />
             </div>
+            <div>
+              <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block">
+                Current Release
+              </span>
+              <h2 className="text-sm sm:text-base font-black text-[#073B69]">
+                {activePost?.monthYear || activePost?.date || "November 2026 Edition"}
+              </h2>
+            </div>
+          </div>
 
-            <div className="bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-0">
-                <div className="md:col-span-5 relative aspect-[16/11] md:aspect-auto md:h-full bg-slate-100 min-h-[260px]">
-                  <Image
-                    src={latestIssue.image || "/assets/blog/blog_waterproofing.jpg"}
-                    alt={latestIssue.title}
-                    fill
-                    priority
-                    sizes="(max-width: 768px) 100vw, 450px"
-                    className="object-cover"
-                  />
-                  <div className="absolute top-4 left-4 bg-[#FFC400] text-[#073B69] text-[11px] font-black px-3 py-1 rounded-lg shadow-xs">
-                    LATEST ISSUE
+          <div className="flex items-center gap-2">
+            {activePost?.pdfUrl && (
+              <a
+                href={activePost.pdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 inline-flex items-center gap-1.5 transition-colors"
+              >
+                <FileDown className="w-3.5 h-3.5 text-[#0875C9]" />
+                <span>Download PDF Edition</span>
+              </a>
+            )}
+
+            <Link
+              href={`/blog/${activePost?.slug || "how-to-choose-the-right-tile-adhesive-for-your-project"}`}
+              className="px-4 py-2 rounded-xl text-xs font-bold text-[#0875C9] hover:bg-blue-50 inline-flex items-center gap-1 transition-colors"
+            >
+              <span>Full Article View</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
+
+        {/* ================= SUBHEADING 1: PROJECT HIGHLIGHTS ================= */}
+        <section className="space-y-6">
+          <div className="border-b border-slate-200 pb-3 flex items-center justify-between">
+            <div>
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#0875C9] block">
+                Section 1
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-black text-[#073B69] tracking-tight">
+                1. {projectTitle}
+              </h2>
+            </div>
+            <span className="text-xs text-slate-400 font-medium hidden sm:inline">
+              Completed site works with completion dates
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {highlights.map((proj, idx) => (
+              <div
+                key={idx}
+                className="bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-xs hover:border-blue-300 transition-all flex flex-col justify-between"
+              >
+                <div>
+                  <div className="relative aspect-[16/10] bg-slate-100 overflow-hidden">
+                    <Image
+                      src={proj.image || "/assets/projects/project_swimming_pool.jpg"}
+                      alt={proj.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 450px"
+                      className="object-cover"
+                    />
+                    {proj.completionDate && (
+                      <div className="absolute top-3 right-3 bg-black/75 backdrop-blur-xs text-white text-[11px] font-bold px-3 py-1 rounded-lg flex items-center gap-1.5 shadow-sm">
+                        <Calendar className="w-3 h-3 text-[#FFC400]" />
+                        <span>Completed: {proj.completionDate}</span>
+                      </div>
+                    )}
                   </div>
-                </div>
 
-                <div className="md:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-2 text-xs text-slate-400">
-                      <span className="font-bold text-[#0875C9]">
-                        {latestIssue.newsletterEdition || latestIssue.monthYear || "Monthly Edition"}
-                      </span>
-                      <span>•</span>
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-3.5 h-3.5" /> {latestIssue.date}
-                      </span>
+                  <div className="p-6 space-y-3">
+                    <div>
+                      <h3 className="text-lg font-black text-[#073B69]">
+                        {proj.title}
+                      </h3>
+                      {proj.location && (
+                        <div className="flex items-center gap-1 text-xs text-slate-500 mt-0.5">
+                          <MapPin className="w-3.5 h-3.5 text-[#0875C9]" />
+                          <span>{proj.location}</span>
+                        </div>
+                      )}
                     </div>
 
-                    <h2 className="text-xl sm:text-2xl font-black text-[#073B69] hover:text-[#0875C9] transition-colors leading-snug">
-                      <Link href={`/blog/${latestIssue.slug}`}>
-                        {latestIssue.title}
-                      </Link>
-                    </h2>
+                    {proj.description && (
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        {proj.description}
+                      </p>
+                    )}
 
-                    <p className="text-slate-600 text-xs sm:text-sm leading-relaxed line-clamp-3">
-                      {latestIssue.summary}
-                    </p>
-                  </div>
-
-                  <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-3">
-                    <Link
-                      href={`/blog/${latestIssue.slug}`}
-                      className="btn-yellow px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black inline-flex items-center gap-2 shadow-xs"
-                    >
-                      <span>READ NEWSLETTER</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
-
-                    {latestIssue.pdfUrl && (
-                      <a
-                        href={latestIssue.pdfUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 inline-flex items-center gap-1.5 transition-colors"
-                      >
-                        <FileDown className="w-4 h-4 text-[#0875C9]" />
-                        <span>Download PDF</span>
-                      </a>
+                    {proj.systemsUsed && proj.systemsUsed.length > 0 && (
+                      <div className="pt-2">
+                        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-1.5">
+                          Products &amp; Systems Specified:
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {proj.systemsUsed.map((sys, sIdx) => (
+                            <span
+                              key={sIdx}
+                              className="text-[11px] bg-blue-50 text-[#0875C9] border border-blue-100 px-2.5 py-0.5 rounded-lg font-semibold flex items-center gap-1"
+                            >
+                              <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                              {sys}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     )}
                   </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
-        )}
+        </section>
 
-        {/* Monthly Editions Archive */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-base font-black text-[#073B69] uppercase tracking-wide">
-              {searchQuery ? `Search Results (${pastIssues.length})` : "Monthly Archive & Editions"}
-            </h3>
-            <span className="text-xs text-slate-400 font-medium">
-              {pastIssues.length} {pastIssues.length === 1 ? "issue" : "issues"} published
+        {/* ================= SUBHEADING 2: OUR STORYLINE ================= */}
+        <section className="space-y-6">
+          <div className="border-b border-slate-200 pb-3 flex items-center justify-between">
+            <div>
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#0875C9] block">
+                Section 2
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-black text-[#073B69] tracking-tight">
+                2. {storylineTitle}
+              </h2>
+            </div>
+            <span className="text-xs text-slate-400 font-medium hidden sm:inline">
+              Monthly updates, factory progress &amp; product milestones
             </span>
           </div>
 
-          {pastIssues.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {pastIssues.map((issue) => (
-                <article
-                  key={issue.id}
-                  className="bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group"
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs space-y-6">
+            <div className="space-y-4">
+              {storylineItems.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50/70 border border-slate-100 hover:bg-white hover:border-blue-200 transition-all"
                 >
-                  <div>
-                    <div className="relative aspect-[16/10] bg-slate-100 overflow-hidden">
-                      <Image
-                        src={issue.image || "/assets/blog/blog_tile_adhesive.jpg"}
-                        alt={issue.title}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover group-hover:scale-104 transition-transform duration-300"
-                      />
-                      <div className="absolute top-3 left-3 bg-[#073B69]/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-md backdrop-blur-xs">
-                        {issue.monthYear || issue.date}
-                      </div>
-                    </div>
-
-                    <div className="p-5 space-y-2.5">
-                      <div className="flex items-center gap-2 text-[11px] text-slate-400 font-medium">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" /> {issue.date}
-                        </span>
-                        <span>•</span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3 h-3" /> {issue.readTime}
-                        </span>
-                      </div>
-
-                      <h4 className="text-sm font-black text-[#073B69] group-hover:text-[#0875C9] transition-colors leading-snug line-clamp-2">
-                        <Link href={`/blog/${issue.slug}`}>{issue.title}</Link>
-                      </h4>
-
-                      <p className="text-slate-600 text-xs leading-relaxed line-clamp-2">
-                        {issue.summary}
-                      </p>
-                    </div>
+                  <div className="w-7 h-7 rounded-full bg-[#0875C9] text-white flex items-center justify-center shrink-0 text-xs font-black mt-0.5">
+                    {idx + 1}
                   </div>
-
-                  <div className="p-5 pt-0 border-t border-slate-50 flex items-center justify-between text-xs">
-                    <Link
-                      href={`/blog/${issue.slug}`}
-                      className="text-[#0875C9] group-hover:text-[#073B69] font-bold inline-flex items-center gap-1 transition-colors"
-                    >
-                      <span>Read Issue</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-
-                    {issue.pdfUrl && (
-                      <a
-                        href={issue.pdfUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-slate-400 hover:text-slate-700 inline-flex items-center gap-1 text-[11px]"
-                      >
-                        <FileDown className="w-3 h-3" />
-                        <span>PDF</span>
-                      </a>
-                    )}
-                  </div>
-                </article>
+                  <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                    {item}
+                  </p>
+                </div>
               ))}
             </div>
-          ) : (
-            <div className="bg-white rounded-2xl p-8 text-center border border-slate-200/80 text-xs text-slate-500">
-              No newsletter issues found matching &ldquo;{searchQuery}&rdquo;.
-            </div>
-          )}
-        </div>
 
-        {/* Minimal Footer & Staff Admin Access */}
-        <div className="pt-6 border-t border-slate-200/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
-          <p>
-            Published monthly by Matshepo Africa Ltd • Nairobi, Kenya
-          </p>
+            {/* General Newsletter Summary if available */}
+            {activePost?.summary && (
+              <div className="pt-4 border-t border-slate-100 text-xs sm:text-sm text-slate-500 italic">
+                &ldquo;{activePost.summary}&rdquo; — {activePost.author?.name || "Matshepo Editorial Team"}
+              </div>
+            )}
+          </div>
+        </section>
 
+        {/* Footer Admin Link */}
+        <div className="pt-8 border-t border-slate-200 flex items-center justify-between text-xs text-slate-400">
+          <span>Published monthly by Matshepo Africa Ltd • Nairobi, Kenya</span>
           <Link
             href="/admin"
-            className="inline-flex items-center gap-1.5 text-slate-600 hover:text-[#0875C9] font-bold transition-colors"
+            className="hover:text-[#0875C9] font-bold flex items-center gap-1 text-slate-500"
           >
             <Lock className="w-3 h-3" />
-            <span>Staff Publishing Portal</span>
+            <span>Admin Editorial Desk</span>
           </Link>
         </div>
       </div>
