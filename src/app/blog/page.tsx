@@ -3,7 +3,7 @@ import { getAllPosts } from "@/lib/posts-store";
 import { InsightsClient } from "@/app/insights/InsightsClient";
 import type { Metadata } from "next";
 
-export const revalidate = 60; // Cache on edge/CDN for 60s for ultra-fast instant loads
+export const instant = false;
 
 export const metadata: Metadata = {
   title: "What’s New — Building the Future | Matshepo Africa Ltd",
