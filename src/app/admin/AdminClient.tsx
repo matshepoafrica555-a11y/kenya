@@ -397,7 +397,7 @@ export const AdminClient: React.FC = () => {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="matshepo"
+                placeholder="Enter admin username..."
                 required
                 className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#0875C9] focus:ring-2 focus:ring-blue-100 text-sm"
               />
@@ -412,7 +412,7 @@ export const AdminClient: React.FC = () => {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="matshepo777"
+                  placeholder="Enter administrator password..."
                   required
                   className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#0875C9] focus:ring-2 focus:ring-blue-100 text-sm"
                 />
@@ -448,12 +448,6 @@ export const AdminClient: React.FC = () => {
               )}
             </button>
           </form>
-
-          <div className="p-3.5 bg-blue-50/70 rounded-xl border border-blue-100 text-[11px] text-slate-600 space-y-1">
-            <span className="font-bold text-[#0875C9] block">Credentials:</span>
-            <p>Username: <code className="bg-white px-2 py-0.5 rounded text-slate-900 font-mono font-bold">matshepo</code></p>
-            <p>Password: <code className="bg-white px-2 py-0.5 rounded text-slate-900 font-mono font-bold">matshepo777</code></p>
-          </div>
 
           <div className="text-center pt-2">
             <Link
